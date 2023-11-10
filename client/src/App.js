@@ -1,5 +1,5 @@
 import "./App.css";
-import { Longpulling } from "./components/Longpulling";
+import { Longpulling } from "./components/LongPulling";
 
 function App() {
   return (
