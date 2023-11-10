@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  width: 800px;
+  height: 100vh;
+  margin: 0 auto;
+  background: rgb(236, 233, 233);
+  box-sizing: border-box;
+}
