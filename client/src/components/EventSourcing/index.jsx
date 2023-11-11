@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import style from "./LongPulling.module.css";
+import style from "./EventSourcing.module.css";
 import axios from "axios";
 
-export const Longpulling = () => {
+export const EventSourcing = () => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
 
@@ -11,15 +11,14 @@ export const Longpulling = () => {
   }, []);
 
   const subscribe = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:5000/messages");
-      setMessages((prev) => [data, ...prev]);
-      await subscribe();
-    } catch (err) {
-      setTimeout(() => {
-        subscribe();
-      }, 500);
-    }
+    const eventSource = new EventSource("http://localhost:5000/connect");
+    eventSource.onmessage = function (event) {
+      const message = JSON.parse(event.data);
+      setMessages((prev) => {
+        return [message, ...prev];
+      });
+      console.log(event.data);
+    };
   };
 
   const sendMessage = async (e) => {
@@ -44,7 +43,9 @@ export const Longpulling = () => {
       </div>
       <div className={style.messages}>
         {messages.map((mess) => (
-          <div key={mess.id} className={style.message}>{mess.message}</div>
+          <div key={mess.id} className={style.message}>
+            {mess.message}
+          </div>
         ))}
       </div>
     </div>
